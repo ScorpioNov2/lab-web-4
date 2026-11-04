@@ -1,0 +1,38 @@
+:host {
+	display: block;
+}
+
+.theme-frame-wrapper {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 100vh;
+	padding: var(--theme-frame-wrapper-padding, 0px);
+	box-shadow: inset 0 var(--theme-padding-top, 0px) 0 0
+		var(--theme-frame-wrapper-padding-color, transparent);
+	transition: all 0.3s ease;
+	background-color: var(--theme-bg-color, transparent);
+	border-width: var(--theme-wrapper-border-width, 10px);
+	border-style: solid;
+	border-image-source: var(--theme-border-image);
+	border-image-slice: 30;
+	border-image-repeat: round;
+	display: flex;
+	flex-direction: column;
+}
+
+/*
+ * Positioned so the pagination can be pinned to its bottom edge. It deliberately has NO z-index:
+ * that would create a stacking context and the student popup (a fixed overlay inside <main>)
+ * would end up below the theme's decorative frame (z-index 120-130).
+ */
+.main-content {
+	width: 100%;
+	max-width: var(--max-width);
+	margin: 24px auto;
+	padding: 0 16px;
+	flex: 1;
+	box-sizing: border-box;
+	position: relative;
+	color: var(--theme-text-color, inherit);
+}

@@ -1,0 +1,22 @@
+<header class="main-header">
+	<div class="header-container">
+		<h1 class="header-title">Система Заявок Студентов</h1>
+
+		<div class="header-auth">
+			@if (auth.isLoggedIn()) {
+				<button type="button" class="btn btn-secondary" (click)="logout()">Выход</button>
+			} @else {
+				<button type="button" class="btn btn-secondary" (click)="openAuth('login', $event)">
+					Вход
+				</button>
+				<button
+					type="button"
+					class="btn btn-primary"
+					(click)="openAuth('register', $event)"
+				>
+					Регистрация
+				</button>
+			}
+		</div>
+	</div>
+</header>

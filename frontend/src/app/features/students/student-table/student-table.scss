@@ -1,0 +1,54 @@
+.custom-table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+	font-size: 14px;
+}
+
+.custom-table th {
+	background-color: var(--color-header);
+	color: var(--color-typography);
+	font-weight: 600;
+	padding: 12px;
+	border-bottom: 1px solid var(--color-border-main);
+	cursor: pointer;
+	user-select: none;
+	position: relative;
+
+	/* Table header hover effect */
+	&:hover {
+		background-color: #ededf0;
+	}
+
+	.asc-ico {
+		/* or inline-flex because inline elms does not have width, height attr */
+		display: inline-block;
+		width: fit-content;
+		position: absolute;
+		right: 12px;
+	}
+}
+
+.custom-table td {
+	padding: 12px;
+}
+
+.custom-table tbody tr {
+	&:nth-child(odd) {
+		background-color: var(--color-background);
+	}
+
+	&:nth-child(even) {
+		background-color: var(--color-blue-light);
+	}
+
+	/* table row focus or click */
+	&:hover {
+		background-color: #d8c7f9 !important;
+		cursor: pointer;
+	}
+
+	&.focused-row {
+		background-color: #d8c7f9 !important;
+	}
+}

@@ -1,0 +1,44 @@
+/* COMPONENT pagination: pinned to the bottom of <main class="main-content"> */
+:host {
+	position: absolute;
+	bottom: 16px;
+	/* Center */
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+}
+
+.pagination-list {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	list-style: none;
+}
+
+.pagination-item button {
+	padding: 6px 12px;
+	font-size: 14px;
+	border: 1px solid var(--color-border-main);
+	background-color: var(--color-background);
+	color: var(--color-typography);
+	border-radius: 6px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--color-header);
+	}
+}
+
+.pagination-item.active button {
+	background-color: var(--color-primary);
+	color: #ffffff;
+	font-weight: bold;
+	border-color: var(--color-border-main);
+}
+
+.pagination-item.dots {
+	padding: 6px 12px;
+	font-size: 14px;
+	color: var(--color-stroke-sub);
+}

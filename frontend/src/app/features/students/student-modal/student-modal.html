@@ -1,0 +1,99 @@
+<app-modal-shell [title]="title()" (closed)="closed.emit()">
+	<form id="student-modal-form" [formGroup]="form()">
+		<div class="form-group">
+			<label for="form-fullName">ФИО студента *</label>
+			<input id="form-fullName" type="text" class="form-control" formControlName="fullName" />
+		</div>
+		<div class="form-group">
+			<label for="form-groupName">Группа *</label>
+			<input
+				id="form-groupName"
+				type="text"
+				class="form-control"
+				formControlName="groupName"
+			/>
+		</div>
+		<div class="form-group">
+			<label for="form-isuId">ИСУ ID *</label>
+			<input id="form-isuId" type="number" class="form-control" formControlName="isuId" />
+		</div>
+		<div class="form-group">
+			<label for="form-dormitoryNumber">Номер общежития *</label>
+			<input
+				id="form-dormitoryNumber"
+				type="number"
+				class="form-control"
+				formControlName="dormitoryNumber"
+			/>
+		</div>
+		<div class="form-group">
+			<label for="form-roomNumber">Комната *</label>
+			<input
+				id="form-roomNumber"
+				type="text"
+				class="form-control"
+				formControlName="roomNumber"
+			/>
+		</div>
+		<div class="form-group">
+			<label for="form-settlementTerm">Срок заселения *</label>
+			<input
+				id="form-settlementTerm"
+				type="date"
+				class="form-control"
+				formControlName="settlementTerm"
+			/>
+		</div>
+		<div class="form-check">
+			<input id="form-isForeigner" type="checkbox" formControlName="foreigner" />
+			<label for="form-isForeigner">Является ли student иностранцем</label>
+		</div>
+		<div class="form-group notes-group">
+			<label for="form-notes">Заметки</label>
+			<textarea
+				id="form-notes"
+				class="form-control notes-input"
+				rows="3"
+				formControlName="notes"
+			></textarea>
+		</div>
+	</form>
+
+	<ng-container ngProjectAs="[modal-footer]">
+		@switch (mode()) {
+			@case ('view') {
+				<button type="button" class="btn btn-secondary" (click)="onSwitchToEdit()">
+					Обновить
+				</button>
+				<button type="button" class="btn btn-danger" (click)="confirmingDelete.set(true)">
+					Удалить
+				</button>
+			}
+			@case ('add') {
+				<button type="button" class="btn btn-secondary" (click)="reset()">Сбросить</button>
+				<button type="button" class="btn btn-success" (click)="submit()">Добавить</button>
+			}
+			@case ('edit') {
+				<button type="button" class="btn btn-secondary" (click)="onCancelEdit()">
+					Отмена
+				</button>
+				<button type="button" class="btn btn-primary" (click)="submit()">Сохранить</button>
+			}
+		}
+	</ng-container>
+</app-modal-shell>
+
+<!-- Дополнительное кастомное модальное окно подтверждения удаления -->
+@if (confirmingDelete()) {
+	<app-modal-shell title="Подтверждение удаления" [closable]="false" [nested]="true">
+		<p class="confirm-text">
+			Вы уверены, что хотите окончательно удалить этого студента из базы данных?
+		</p>
+		<ng-container ngProjectAs="[modal-footer]">
+			<button type="button" class="btn btn-secondary" (click)="confirmingDelete.set(false)">
+				Отмена
+			</button>
+			<button type="button" class="btn btn-danger" (click)="confirmDelete()">Удалить</button>
+		</ng-container>
+	</app-modal-shell>
+}

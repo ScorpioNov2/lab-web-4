@@ -1,0 +1,36 @@
+.btn {
+	padding: 8px 16px;
+	font-size: 14px;
+	font-weight: 600;
+	border-radius: 6px;
+	border: 1px solid var(--color-border-main);
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	&[disabled] {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+}
+
+.btn-success {
+	background-color: var(--color-success);
+	color: #ffffff;
+}
+
+.btn-danger {
+	background-color: var(--color-danger);
+	color: #ffffff;
+}
+
+.btn-primary {
+	background-color: var(--color-primary);
+	color: #ffffff;
+}
+
+.btn-secondary {
+	background-color: var(--color-header);
+	color: var(--color-typography);
+}

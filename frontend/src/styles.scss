@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles. Component-specific styles live next to their components. */
+@use 'styles/tokens';
+@use 'styles/base';
+@use 'styles/buttons';
+@use 'styles/forms';
+
+/* Event themes: each one sets CSS variables under html[data-theme='<name>'] */
+@use 'styles/themes/halloween';
+// @use 'styles/themes/christmas';

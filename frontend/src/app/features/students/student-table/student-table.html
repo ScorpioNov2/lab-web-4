@@ -1,0 +1,37 @@
+<table class="custom-table">
+	<thead>
+		<tr>
+			@for (column of columns; track column.field) {
+				<th
+					scope="col"
+					tabindex="0"
+					[attr.aria-sort]="ariaSort(column.field)"
+					(click)="sort.emit(column.field)"
+					(keydown.enter)="sort.emit(column.field)"
+				>
+					{{ column.label }}<span class="asc-ico">{{ sortIcon(column.field) }}</span>
+				</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+		@for (student of students(); track student.isuId) {
+			<tr
+				tabindex="0"
+				[class.focused-row]="student.isuId === focusedIsuId()"
+				(click)="rowSelect.emit(student.isuId)"
+				(dblclick)="rowOpen.emit(student.isuId)"
+				(keydown.enter)="rowOpen.emit(student.isuId)"
+				(keydown.space)="onRowSpace($event, student.isuId)"
+			>
+				<td>
+					<strong>{{ student.fullName }}</strong>
+				</td>
+				<td>{{ student.groupName }}</td>
+				<td>{{ student.isuId }}</td>
+				<td>№ {{ student.dormitoryNumber }}</td>
+				<td>{{ student.roomNumber }}</td>
+			</tr>
+		}
+	</tbody>
+</table>

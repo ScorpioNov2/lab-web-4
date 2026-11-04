@@ -1,0 +1,220 @@
+.frame-line-border {
+	position: fixed;
+	z-index: 120;
+	pointer-events: none;
+}
+
+/* --- edges --- */
+.border-top {
+	top: var(--border-top-offset-top, 0);
+	left: var(--border-top-offset-left, 0);
+	right: var(--border-top-offset-right, 0);
+	height: var(--border-top-height, 100px);
+	background-image: var(--border-top-img);
+	background-position: var(--border-top-position, top left);
+	background-repeat: repeat-x;
+	background-size: auto var(--border-top-height, 100px);
+}
+
+.border-bottom {
+	bottom: var(--border-bottom-offset-bottom, 0);
+	left: var(--border-bottom-offset-left, 0);
+	right: var(--border-bottom-offset-right, 0);
+	height: var(--border-bottom-height, 100px);
+	background-image: var(--border-bottom-img);
+	background-position: bottom left;
+	background-repeat: repeat-x;
+	background-size: auto var(--border-bottom-height, 100px);
+}
+
+.border-left {
+	top: var(--border-left-offset-top, 0);
+	bottom: var(--border-left-offset-bottom, 0);
+	left: var(--border-left-offset-left, 0);
+	width: var(--border-left-width, 100px);
+	background-image: var(--border-left-img);
+	background-position: left center;
+	background-repeat: repeat-y;
+	background-size: var(--border-left-width, 100px) auto;
+}
+
+.border-right {
+	top: var(--border-right-offset-top, 0);
+	bottom: var(--border-right-offset-bottom, 0);
+	right: var(--border-right-offset-right, 0);
+	width: var(--border-right-width, 100px);
+	background-image: var(--border-right-img);
+	background-position: right center;
+	background-repeat: repeat-y;
+	background-size: var(--border-right-width, 100px) auto;
+}
+
+/* --- slot position + size --- */
+.frame-decor-slot {
+	position: fixed;
+	z-index: 130;
+	pointer-events: none;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	filter: drop-shadow(2px 3px 5px rgba(0, 0, 0, 0.2));
+	background-image: none;
+}
+
+/* top edge */
+.slot-top-1 {
+	top: var(--slot-top-1-top, 15px);
+	left: var(--slot-top-1-left, 20%);
+	width: var(--slot-top-1-size, 45px);
+	height: var(--slot-top-1-size, 45px);
+	background-image: var(--slot-top-1-img);
+}
+
+.slot-top-2 {
+	top: var(--slot-top-2-top, 12px);
+	left: var(--slot-top-2-left, 40%);
+	width: var(--slot-top-2-size, 45px);
+	height: var(--slot-top-2-size, 45px);
+	background-image: var(--slot-top-2-img);
+}
+
+.slot-top-3 {
+	top: var(--slot-top-3-top, 18px);
+	left: var(--slot-top-3-left, 60%);
+	width: var(--slot-top-3-size, 45px);
+	height: var(--slot-top-3-size, 45px);
+	background-image: var(--slot-top-3-img);
+}
+
+.slot-top-4 {
+	top: var(--slot-top-4-top, 14px);
+	left: var(--slot-top-4-left, 80%);
+	width: var(--slot-top-4-size, 45px);
+	height: var(--slot-top-4-size, 45px);
+	background-image: var(--slot-top-4-img);
+}
+
+/* left edge */
+.slot-left-1 {
+	top: var(--slot-left-1-top, 25%);
+	left: var(--slot-left-1-left, 15px);
+	width: var(--slot-left-1-size, 45px);
+	height: var(--slot-left-1-size, 45px);
+	background-image: var(--slot-left-1-img);
+}
+
+.slot-left-2 {
+	top: var(--slot-left-2-top, 50%);
+	left: var(--slot-left-2-left, 12px);
+	width: var(--slot-left-2-size, 45px);
+	height: var(--slot-left-2-size, 45px);
+	background-image: var(--slot-left-2-img);
+}
+
+.slot-left-3 {
+	top: var(--slot-left-3-top, 75%);
+	left: var(--slot-left-3-left, 16px);
+	width: var(--slot-left-3-size, 45px);
+	height: var(--slot-left-3-size, 45px);
+	background-image: var(--slot-left-3-img);
+}
+
+/* right edge */
+.slot-right-1 {
+	top: var(--slot-right-1-top, 25%);
+	right: var(--slot-right-1-right, 15px);
+	width: var(--slot-right-1-size, 45px);
+	height: var(--slot-right-1-size, 45px);
+	background-image: var(--slot-right-1-img);
+}
+
+.slot-right-2 {
+	top: var(--slot-right-2-top, 50%);
+	right: var(--slot-right-2-right, 16px);
+	width: var(--slot-right-2-size, 45px);
+	height: var(--slot-right-2-size, 45px);
+	background-image: var(--slot-right-2-img);
+}
+
+.slot-right-3 {
+	top: var(--slot-right-3-top, 75%);
+	right: var(--slot-right-3-right, 12px);
+	width: var(--slot-right-3-size, 45px);
+	height: var(--slot-right-3-size, 45px);
+	background-image: var(--slot-right-3-img);
+}
+
+/* bottom edge */
+.slot-bottom-1 {
+	bottom: var(--slot-bottom-1-bottom, 15px);
+	left: var(--slot-bottom-1-left, 20%);
+	width: var(--slot-bottom-1-size, 45px);
+	height: var(--slot-bottom-1-size, 45px);
+	background-image: var(--slot-bottom-1-img);
+}
+
+.slot-bottom-2 {
+	bottom: var(--slot-bottom-2-bottom, 18px);
+	left: var(--slot-bottom-2-left, 40%);
+	width: var(--slot-bottom-2-size, 45px);
+	height: var(--slot-bottom-2-size, 45px);
+	background-image: var(--slot-bottom-2-img);
+}
+
+.slot-bottom-3 {
+	bottom: var(--slot-bottom-3-bottom, 12px);
+	left: var(--slot-bottom-3-left, 60%);
+	width: var(--slot-bottom-3-size, 45px);
+	height: var(--slot-bottom-3-size, 45px);
+	background-image: var(--slot-bottom-3-img);
+}
+
+.slot-bottom-4 {
+	bottom: var(--slot-bottom-4-bottom, 16px);
+	left: var(--slot-bottom-4-left, 80%);
+	width: var(--slot-bottom-4-size, 45px);
+	height: var(--slot-bottom-4-size, 45px);
+	background-image: var(--slot-bottom-4-img);
+}
+
+/* --- 4 corners: position + size --- */
+.frame-corner {
+	position: fixed;
+	z-index: 121;
+	pointer-events: none;
+	background-size: contain;
+	background-repeat: no-repeat;
+	/* background-position: center; */
+}
+
+.frame-corner-top-left {
+	top: var(--corner-top-left-top, 5px);
+	left: var(--corner-top-left-left, 5px);
+	width: var(--corner-top-left-width, 80px);
+	height: var(--corner-top-left-height, auto);
+	background-image: var(--corner-top-left-img);
+}
+
+.frame-corner-top-right {
+	top: var(--corner-top-right-top, 5px);
+	right: var(--corner-top-right-right, 5px);
+	width: var(--corner-top-right-width, 80px);
+	height: var(--corner-top-right-height, auto);
+	background-image: var(--corner-top-right-img);
+}
+
+.frame-corner-bottom-left {
+	bottom: var(--corner-bottom-left-bottom, 5px);
+	left: var(--corner-bottom-left-left, 5px);
+	width: var(--corner-bottom-left-width, 80px);
+	height: var(--corner-bottom-left-height, auto);
+	background-image: var(--corner-bottom-left-img);
+}
+
+.frame-corner-bottom-right {
+	bottom: var(--corner-bottom-right-bottom, 5px);
+	right: var(--corner-bottom-right-right, 5px);
+	width: var(--corner-bottom-right-width, 80px);
+	height: var(--corner-bottom-right-height, auto);
+	background-image: var(--corner-bottom-right-img);
+}

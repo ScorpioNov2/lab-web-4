@@ -1,0 +1,128 @@
+/* Halloween theme */
+/* Когда HTML-тег имеет атрибут data-theme="halloween", активировать эту галерею изображений */
+html[data-theme='halloween'] {
+	/* background & color */
+	--theme-border-color: #e67e22;
+	/* --theme-border-image: url('/assets/themes/halloween/border-image.png'); */
+	/* --theme-bg-color: #1d1a1a; */
+	/* --theme-text-color: #ffffff; */
+	--theme-wrapper-border-width: 0px;
+	--theme-frame-wrapper-padding: 70px 0px 0px;
+	--theme-padding-top: 70px;
+	--theme-frame-wrapper-padding-color: #f6f8fa;
+
+	/* кастомизация отдельных граней рамки (спрайты, толщина, позиционирование) */
+	--border-top-img: url('/assets/themes/halloween/decorator-2.png');
+	--border-top-height: 86.5px;
+	--border-top-offset-top: 0px;
+	--border-top-position: 0px;
+
+	--border-bottom-img: url('/assets/themes/halloween/seamless-vine-2.png');
+	--border-bottom-height: 60px;
+	--border-bottom-offset-bottom: -6px;
+
+	--border-left-img: url('/assets/themes/halloween/seamless-vine-3.png');
+	--border-left-width: 60px;
+	--border-left-offset-left: -26px;
+
+	--border-right-img: url('/assets/themes/halloween/seamless-vine-3.png');
+	--border-right-width: 60px;
+	--border-right-offset-right: -26px;
+
+	/* 2. тонкая настройка 4 углов по отдельности (кастомные спрайты, свои размеры) */
+	/* верхний левый угол: гигантская летучая мышь */
+	--corner-top-left-img: url('/assets/themes/halloween/giant-bat.png');
+	--corner-top-left-width: 150px;
+	--corner-top-left-height: 120px;
+	--corner-top-left-top: -10px;
+	--corner-top-left-left: -10px;
+
+	/* верхний правый угол: заброшенный дом с привидениями */
+	--corner-top-right-img: url('/assets/themes/halloween/ghost-house.png');
+	--corner-top-right-width: 130px;
+	--corner-top-right-height: 130px;
+	--corner-top-right-top: 0px;
+	--corner-top-right-right: 0px;
+
+	/* оба нижних угла: классическая хэллоуинская тыква */
+	--corner-bottom-left-img: url('/assets/themes/halloween/bottom-left-corner.png');
+	--corner-bottom-left-width: 250px;
+	--corner-bottom-left-height: 250px;
+	--corner-bottom-left-bottom: -14px;
+	--corner-bottom-left-left: -20px;
+
+	--corner-bottom-right-img: url('/assets/themes/halloween/pumpkin-corner.png');
+	--corner-bottom-right-width: 90px;
+	--corner-bottom-right-height: 90px;
+	--corner-bottom-right-bottom: 5px;
+	--corner-bottom-right-right: 5px;
+
+	/* 3. кастомизация отдельных слотов фиксации предметов (пример детальной настройки некоторых ячеек) */
+	--slot-bottom-1-img: url('/assets/themes/halloween/pumpkin-3.png');
+	--slot-bottom-1-size: 80px;
+	--slot-bottom-1-bottom: -10px;
+	--slot-bottom-1-left: 18%;
+
+	/* верхняя ячейка №2: крошечное парящее привидение */
+	--slot-top-2-img: url('/assets/themes/halloween/witches.png');
+	--slot-top-2-size: 35px;
+	--slot-top-2-top: 95px;
+
+	/* дефолтные настройки для остальных ячеек (если локальные координаты не заданы, система подтянет базовые значения из ядра CSS) */
+	--slot-top-1-img: url('/assets/themes/halloween/pumpkin-1.png');
+	--slot-top-1-size: 48px;
+	--slot-top-1-top: 90px;
+	--slot-top-3-img: url('/assets/themes/halloween/pumpkin-2.png');
+	--slot-top-3-top: 90px;
+	--slot-top-4-img: url('/assets/themes/halloween/witches.png');
+	--slot-top-4-top: 86px;
+
+	--slot-left-1-img: url('/assets/themes/halloween/pumpkin-3.png');
+	--slot-left-1-top: 170px;
+	--slot-left-1-left: -10px;
+	--slot-left-2-img: url('/assets/themes/halloween/pumpkin-4.png');
+	--slot-left-2-top: 40%;
+	--slot-left-3-img: url('/assets/themes/halloween/witches.png');
+	--slot-left-3-top: 60%;
+
+	--slot-right-1-img: url('/assets/themes/halloween/pumpkin-6.png');
+	--slot-right-1-size: 80px;
+	--slot-right-2-img: url('/assets/themes/halloween/pumpkin-1.png');
+	--slot-right-3-img: url('/assets/themes/halloween/pumpkin-2.png');
+
+	--slot-bottom-2-img: url('/assets/themes/halloween/pumpkin-4.png');
+	--slot-bottom-2-bottom: 0px;
+	--slot-bottom-3-img: url('/assets/themes/halloween/witches.png');
+	--slot-bottom-4-img: url('/assets/themes/halloween/pumpkin-1.png');
+
+	/* 4. MODAL THEME HALLOWEEN */
+	--theme-border-image: url('/assets/themes/halloween/border-1.png');
+
+	/* --- 5. GLOBAL FALLING EFFECT CONFIGURATION --- */
+	--has-falling-effect: true;
+	/* общее количество спрайтов падающих объектов для этой темы */
+	--theme-falling-item-count: 7;
+
+	--falling-item-img-1: url('/assets/themes/halloween/leaf-1.png');
+	--falling-item-img-2: url('/assets/themes/halloween/leaf-2.png');
+	--falling-item-img-3: url('/assets/themes/halloween/leaf-3.png');
+	--falling-item-img-4: url('/assets/themes/halloween/leaf-4.png');
+	--falling-item-img-5: url('/assets/themes/halloween/leaf-5.png');
+	--falling-item-img-6: url('/assets/themes/halloween/leaf-6.png');
+	--falling-item-img-7: url('/assets/themes/halloween/leaf-7.png');
+
+	/* --- 6. WELCOME FLYER (app/theme/welcome-pigeon/welcome-pigeon.ts) ---
+    Без --welcome-flyer-image приветственную табличку тянет голубь по умолчанию.
+    Если картинка задана, вместо голубя летит она (покачивается и "парит"), а верёвка привязывается к точке anchor. */
+	--welcome-flyer-image: url('/assets/themes/halloween/witch.png');
+	/* размер всей картинки (вместе с прозрачными полями) */
+	--welcome-flyer-width: 200px;
+	/* сохраняйте пропорции картинки (witch.png = 1350 x 1009) */
+	--welcome-flyer-height: 150px;
+	/* куда привязана верёвка: доля ширины картинки (0..1)... */
+	--welcome-flyer-anchor-x: 0.14;
+	/* ...и доля высоты. здесь: кончик помела */
+	--welcome-flyer-anchor-y: 0.69;
+	/* необязательно: сдвиг вверх (пустое поле над шляпой уходит за край; шляпа не должна обрезаться при покачивании на 12px) */
+	--welcome-flyer-top: -8px;
+}

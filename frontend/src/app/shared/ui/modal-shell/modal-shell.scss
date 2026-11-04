@@ -1,0 +1,141 @@
+/* --- COMPONENT POPUP --- */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+/* a popup on top of another popup (delete confirmation) */
+.modal-overlay-nested {
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1100;
+
+	.modal-window {
+		max-width: 400px;
+		animation: modalPopIn 0.2s ease;
+	}
+}
+
+.modal-window {
+	background-color: var(--color-background);
+	border: 1px solid var(--color-border-main);
+	border-radius: 8px;
+	width: 100%;
+	max-width: 550px;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
+	/* Event themes paint a decorative frame over the window (see styles/themes/) */
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-image: var(--theme-border-image, none);
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		z-index: 200;
+		/* IMPORTANT: Make elements behind this layer clickable */
+		pointer-events: none;
+	}
+}
+
+.modal-header {
+	background-color: var(--color-header);
+	border-bottom: 1px solid var(--color-border-main);
+	padding: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+
+.modal-title {
+	font-size: 16px;
+	font-weight: 600;
+	flex-grow: 1;
+	text-align: center;
+}
+
+/* Close btn */
+.close-modal-button {
+	background: none;
+	border: none;
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+	color: var(--color-stroke-sub);
+	position: relative;
+	z-index: 210;
+	transition:
+		transform 0.2s linear,
+		color 0.2s linear;
+
+	&:hover {
+		color: var(--color-typography);
+		transform: scale(1.2);
+	}
+
+	/* Tooltip Закрыть */
+	&:hover::after {
+		content: 'Закрыть';
+		position: absolute;
+		top: -16px;
+		left: 50%;
+		background-color: var(--color-typography);
+		color: #ffffff;
+		font-size: 11px;
+		padding: 4px 8px;
+		border-radius: 4px;
+		white-space: nowrap;
+		z-index: 10;
+		text-align: center;
+	}
+}
+
+.modal-body {
+	padding: 16px 20px;
+	max-height: 75vh;
+	overflow-y: auto;
+}
+
+.modal-footer {
+	padding: 8px 16px 16px;
+	display: flex;
+	justify-content: flex-end;
+	gap: 12px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	z-index: 210;
+}
+
+@keyframes modalPopIn {
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* RESPONSIVE TABLET */
+@media (max-width: 768px) {
+	.modal-window {
+		max-width: 90%;
+	}
+}

@@ -1,0 +1,16 @@
+<div class="falling-container-wrapper">
+	@for (item of items(); track item.id) {
+		<div
+			class="falling-item"
+			[class.landed]="item.landed"
+			[attr.data-index]="item.index"
+			[style.left.%]="item.left"
+			[style.width.px]="item.size"
+			[style.height.px]="item.size"
+			[style.animation-duration]="item.animationDuration"
+			[style.animation-delay]="item.animationDelay"
+			[style.opacity]="item.fading ? 0 : null"
+			[style.transform]="item.landed ? 'rotate(' + item.rotation + 'deg)' : null"
+		></div>
+	}
+</div>

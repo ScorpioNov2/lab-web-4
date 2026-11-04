@@ -1,0 +1,151 @@
+@if (modal.mode(); as mode) {
+	<app-modal-shell [title]="title(mode)" (closed)="modal.close()">
+		@if (mode === 'login') {
+			<form id="auth-modal-form" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+				<div class="form-group">
+					<label for="auth-login-identifier">Имя пользователя или Email *</label>
+					<input
+						id="auth-login-identifier"
+						type="text"
+						class="form-control"
+						formControlName="loginIdentifier"
+						placeholder="username или example@mail.ru"
+					/>
+				</div>
+				<div class="form-group">
+					<label for="auth-password">Пароль *</label>
+					<div class="password-wrapper">
+						<input
+							id="auth-password"
+							class="form-control"
+							formControlName="password"
+							placeholder="••••••••"
+							[type]="showPassword() ? 'text' : 'password'"
+						/>
+						<button
+							type="button"
+							class="toggle-password-btn"
+							aria-label="Показать или скрыть пароль"
+							(click)="showPassword.set(!showPassword())"
+						>
+							<img
+								class="eye-icon"
+								alt=""
+								[src]="
+									showPassword()
+										? 'assets/icons/eye-open.svg'
+										: 'assets/icons/eye-closed.svg'
+								"
+							/>
+						</button>
+					</div>
+				</div>
+			</form>
+		} @else {
+			<form id="auth-modal-form" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+				<div class="form-group">
+					<label for="auth-fullName">ФИО *</label>
+					<input
+						id="auth-fullName"
+						type="text"
+						class="form-control"
+						formControlName="fullName"
+						placeholder="Иванов Иван Иванович"
+					/>
+				</div>
+				<div class="form-group">
+					<label for="auth-username">Имя пользователя (Username) *</label>
+					<input
+						id="auth-username"
+						type="text"
+						class="form-control"
+						formControlName="username"
+						placeholder="ivan_ivanov"
+					/>
+				</div>
+				<div class="form-group">
+					<label for="auth-email">Электронная почта *</label>
+					<input
+						id="auth-email"
+						type="email"
+						class="form-control"
+						formControlName="email"
+						placeholder="example@mail.ru"
+					/>
+				</div>
+				<div class="form-group">
+					<label for="auth-register-password">Пароль *</label>
+					<div class="password-wrapper">
+						<input
+							id="auth-register-password"
+							class="form-control"
+							formControlName="password"
+							placeholder="••••••••"
+							[type]="showPassword() ? 'text' : 'password'"
+						/>
+						<button
+							type="button"
+							class="toggle-password-btn"
+							aria-label="Показать или скрыть пароль"
+							(click)="showPassword.set(!showPassword())"
+						>
+							<img
+								class="eye-icon"
+								alt=""
+								[src]="
+									showPassword()
+										? 'assets/icons/eye-open.svg'
+										: 'assets/icons/eye-closed.svg'
+								"
+							/>
+						</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="auth-password-confirm">Подтверждение пароля *</label>
+					<div class="password-wrapper">
+						<input
+							id="auth-password-confirm"
+							class="form-control"
+							formControlName="passwordConfirm"
+							placeholder="••••••••"
+							[type]="showPasswordConfirm() ? 'text' : 'password'"
+						/>
+						<button
+							type="button"
+							class="toggle-password-btn"
+							aria-label="Показать или скрыть пароль"
+							(click)="showPasswordConfirm.set(!showPasswordConfirm())"
+						>
+							<img
+								class="eye-icon"
+								alt=""
+								[src]="
+									showPasswordConfirm()
+										? 'assets/icons/eye-open.svg'
+										: 'assets/icons/eye-closed.svg'
+								"
+							/>
+						</button>
+					</div>
+				</div>
+			</form>
+		}
+
+		<ng-container ngProjectAs="[modal-footer]">
+			@if (mode === 'login') {
+				<button type="button" class="btn btn-secondary" (click)="modal.open('register')">
+					Регистрация
+				</button>
+				<button type="submit" form="auth-modal-form" class="btn btn-primary">Войти</button>
+			} @else {
+				<button type="button" class="btn btn-secondary" (click)="modal.open('login')">
+					Вход
+				</button>
+				<button type="submit" form="auth-modal-form" class="btn btn-success">
+					Создать аккаунт
+				</button>
+			}
+		</ng-container>
+	</app-modal-shell>
+}

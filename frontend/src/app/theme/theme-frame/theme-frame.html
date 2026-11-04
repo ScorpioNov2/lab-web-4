@@ -1,0 +1,11 @@
+@if (theme.decorations(); as decorations) {
+	@for (position of decorations.corners; track position) {
+		<div class="frame-corner frame-corner-{{ position }}"></div>
+	}
+	@for (position of decorations.lines; track position) {
+		<div class="frame-line-border border-{{ position }}"></div>
+	}
+	@for (position of decorations.slots; track position) {
+		<div class="frame-decor-slot slot-{{ position }}"></div>
+	}
+}

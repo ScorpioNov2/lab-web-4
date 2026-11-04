@@ -1,0 +1,39 @@
+/* Password field with the show/hide "eye" button */
+.password-wrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100%;
+
+	.form-control {
+		padding-right: 40px;
+		width: 100%;
+	}
+}
+
+.toggle-password-btn {
+	position: absolute;
+	right: 10px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0.5;
+	transition: opacity 0.2s ease;
+	user-select: none;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+/* Fixed size for the eye icon inside the button */
+.eye-icon {
+	width: 20px;
+	height: 20px;
+	display: block;
+	object-fit: contain;
+}

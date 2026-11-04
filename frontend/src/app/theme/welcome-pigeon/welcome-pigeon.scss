@@ -1,0 +1,297 @@
+/* --- COMPONENT WELCOME PIGEON (welcome-pigeon.ts) ---
+   Layout of .pigeon-flyer-inner, moving left -> right:
+
+       [ rope tail | sign | gap ][ flyer ]      the rope is tied to the flyer's ANCHOR point
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>    (pigeon: its beak, witch: the tip of the broom).
+
+   The geometry is driven by variables so the same layout serves any flyer:
+     --flyer-width / --flyer-height   size of the flyer
+     --flyer-anchor-x / -y            anchor as a fraction (0..1) of that size
+   Defaults = the SVG pigeon (112x84, beak at x=108 / y=34). A theme file can replace the pigeon by a picture
+   (class .is-custom) through the --welcome-flyer-* variables, see src/styles/themes/_halloween.scss. */
+
+.pigeon-flyer {
+	--flyer-width: 112px;
+	--flyer-height: 84px;
+	--flyer-anchor-x: calc(108 / 112);
+	--flyer-anchor-y: calc(34 / 84);
+	--flyer-top: 10px;
+	/* the anchor in px, measured from the flyer's top-left corner */
+	--anchor-px-x: calc(var(--flyer-width) * var(--flyer-anchor-x));
+	--anchor-px-y: calc(var(--flyer-height) * var(--flyer-anchor-y));
+
+	position: fixed;
+	top: var(--flyer-top);
+	left: 0;
+	/* above the modals (1000-1100), below the toasts (2000) */
+	z-index: 1500;
+	pointer-events: none;
+	visibility: hidden;
+	will-change: transform;
+}
+
+.pigeon-flyer.is-flying {
+	visibility: visible;
+	animation: pigeon-fly var(--pigeon-duration, 9s) linear forwards;
+}
+
+.pigeon-flyer-inner {
+	display: flex;
+	align-items: flex-start;
+	animation: pigeon-bob 0.72s ease-in-out infinite;
+}
+
+/* ---- bird ---- */
+.pigeon-bird {
+	position: relative;
+	z-index: 2;
+	flex: 0 0 auto;
+	width: var(--flyer-width);
+	height: var(--flyer-height);
+	/* the tow's right edge sits exactly on the anchor */
+	margin-left: calc(var(--anchor-px-x) * -1);
+}
+
+.pigeon-bird svg {
+	display: block;
+}
+
+.pigeon-wing-near,
+.pigeon-wing-far {
+	transform-box: view-box;
+	transform-origin: 62px 38px;
+	animation: pigeon-flap 0.36s ease-in-out infinite alternate;
+}
+
+.pigeon-wing-far {
+	animation-delay: -0.04s;
+}
+
+/* ---- rope + sign ---- */
+.pigeon-tow {
+	position: relative;
+	z-index: 1;
+	/* top: rope (at the anchor's y) + strings (16px); left: rope tail; right: room for the flyer + gap */
+	flex: 0 0 auto;
+	padding: calc(var(--anchor-px-y) + 17px) calc(var(--anchor-px-x) + 14px) 0 18px;
+	/* swings around the anchor */
+	transform-origin: 100% var(--anchor-px-y);
+	animation: pigeon-sway 1.6s ease-in-out infinite alternate;
+}
+
+.pigeon-rope {
+	position: absolute;
+	top: calc(var(--anchor-px-y) - 1px);
+	left: 0;
+	right: 0;
+	height: 2px;
+	border-radius: 1px;
+	background: #6b4a2b;
+}
+
+.pigeon-rope::before {
+	/* knot at the loose end of the rope */
+	content: '';
+	position: absolute;
+	left: -2px;
+	top: -2px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #6b4a2b;
+}
+
+.pigeon-string {
+	position: absolute;
+	top: calc(var(--anchor-px-y) + 1px);
+	width: 2px;
+	height: 16px;
+	background: #6b4a2b;
+}
+
+.pigeon-string-left {
+	left: 40px;
+}
+
+.pigeon-string-right {
+	/* 14px gap + 22px in from the sign's edge */
+	right: calc(var(--anchor-px-x) + 36px);
+}
+
+.pigeon-board {
+	white-space: nowrap;
+	padding: 8px 18px;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.25;
+	color: #4a2a0a;
+	background: linear-gradient(180deg, #f0d49b 0%, #d9b06a 100%);
+	border: 2px solid #8a5a2b;
+	border-radius: 6px;
+	box-shadow:
+		0 4px 10px rgba(0, 0, 0, 0.35),
+		inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.pigeon-board-name {
+	font-weight: 800;
+	color: #7a1f12;
+}
+
+/* ---- animations ---- */
+@keyframes pigeon-fly {
+	from {
+		transform: translate3d(var(--pigeon-from, -100%), 0, 0);
+	}
+
+	to {
+		transform: translate3d(var(--pigeon-to, 100vw), 0, 0);
+	}
+}
+
+@keyframes pigeon-flap {
+	from {
+		transform: rotate(10deg);
+	}
+
+	to {
+		transform: rotate(-75deg);
+	}
+}
+
+@keyframes pigeon-bob {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-4px);
+	}
+}
+
+@keyframes pigeon-sway {
+	from {
+		transform: rotate(-0.8deg);
+	}
+
+	to {
+		transform: rotate(-2deg);
+	}
+}
+
+@keyframes pigeon-fade {
+	0% {
+		opacity: 0;
+	}
+
+	12%,
+	80% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+/* prefers-reduced-motion: no flying, the sign just fades in at the top centre and out again */
+.pigeon-flyer.is-static {
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.pigeon-flyer.is-static.is-flying {
+	animation: pigeon-fade var(--pigeon-duration, 4.5s) ease forwards;
+}
+
+.pigeon-flyer.is-static * {
+	animation: none !important;
+}
+
+@media (max-width: 600px) {
+	.pigeon-board {
+		font-size: 13px;
+		padding: 6px 12px;
+	}
+}
+
+/* ---- custom flyer: a picture chosen by the theme replaces the pigeon ----
+   A single flat picture can't flap, so it is brought to life with motion: the whole flyer rises and falls (bob),
+   the picture pitches nose-up while climbing and nose-down while sinking (around the rope anchor, so the rope
+   stays attached), its glow pulses and the sign lags behind with a swing. All four share one 1.8s rhythm. */
+.pigeon-flyer.is-custom {
+	--flyer-width: var(--welcome-flyer-width, 180px);
+	--flyer-height: var(--welcome-flyer-height, 135px);
+	--flyer-anchor-x: var(--welcome-flyer-anchor-x, 0.1);
+	--flyer-anchor-y: var(--welcome-flyer-anchor-y, 0.5);
+	--flyer-top: var(--welcome-flyer-top, 10px);
+}
+
+/* the picture comes from the theme's --welcome-flyer-image variable */
+.pigeon-bird-image {
+	width: 100%;
+	height: 100%;
+	background: var(--welcome-flyer-image) no-repeat center / 100% 100%;
+	transform-origin: calc(var(--flyer-anchor-x) * 100%) calc(var(--flyer-anchor-y) * 100%);
+	animation:
+		flyer-pitch 1.8s ease-in-out infinite,
+		flyer-glow 1.2s ease-in-out infinite alternate;
+}
+
+.pigeon-flyer.is-custom .pigeon-flyer-inner {
+	animation: flyer-bob 1.8s ease-in-out infinite;
+}
+
+.pigeon-flyer.is-custom .pigeon-tow {
+	animation: flyer-sway 1.8s ease-in-out -0.45s infinite;
+}
+
+@keyframes flyer-bob {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-12px);
+	}
+}
+
+/* nose up (negative = counter-clockwise for a picture facing right) while rising, nose down while sinking */
+@keyframes flyer-pitch {
+	0%,
+	50%,
+	100% {
+		transform: rotate(0deg);
+	}
+
+	25% {
+		transform: rotate(-4deg);
+	}
+
+	75% {
+		transform: rotate(4deg);
+	}
+}
+
+@keyframes flyer-glow {
+	from {
+		filter: drop-shadow(0 0 3px rgba(255, 140, 30, 0.3));
+	}
+
+	to {
+		filter: drop-shadow(0 0 11px rgba(255, 150, 40, 0.85));
+	}
+}
+
+@keyframes flyer-sway {
+	0%,
+	100% {
+		transform: rotate(-1deg);
+	}
+
+	50% {
+		transform: rotate(-3.2deg);
+	}
+}

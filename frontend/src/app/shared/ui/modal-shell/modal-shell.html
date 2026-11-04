@@ -1,0 +1,29 @@
+<div
+	class="modal-overlay"
+	role="presentation"
+	[class.modal-overlay-nested]="nested()"
+	(click)="onOverlayClick($event)"
+	(keydown.escape)="closable() && closed.emit()"
+>
+	<div class="modal-window" role="dialog" aria-modal="true" [attr.aria-label]="title()">
+		<div class="modal-header">
+			<span class="modal-title">{{ title() }}</span>
+			@if (closable()) {
+				<button
+					type="button"
+					class="close-modal-button"
+					aria-label="Закрыть"
+					(click)="closed.emit()"
+				>
+					×
+				</button>
+			}
+		</div>
+		<div class="modal-body">
+			<ng-content />
+		</div>
+		<div class="modal-footer">
+			<ng-content select="[modal-footer]" />
+		</div>
+	</div>
+</div>

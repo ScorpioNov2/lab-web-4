@@ -1,0 +1,31 @@
+@if (totalPages() > 1) {
+	<ul class="pagination-list">
+		<li class="pagination-item">
+			<button
+				type="button"
+				[disabled]="currentPage() === 1"
+				(click)="goTo(currentPage() - 1)"
+			>
+				&lt; prev
+			</button>
+		</li>
+		@for (item of range(); track $index) {
+			@if (item === '...') {
+				<li class="pagination-item dots">...</li>
+			} @else {
+				<li class="pagination-item" [class.active]="item === currentPage()">
+					<button type="button" (click)="goTo(item)">{{ item }}</button>
+				</li>
+			}
+		}
+		<li class="pagination-item">
+			<button
+				type="button"
+				[disabled]="currentPage() === totalPages()"
+				(click)="goTo(currentPage() + 1)"
+			>
+				next &gt;
+			</button>
+		</li>
+	</ul>
+}
