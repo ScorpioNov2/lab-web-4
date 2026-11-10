@@ -1,5 +1,5 @@
 # --- STAGE 1: Сборка исходного кода с помощью Maven ---
-FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
@@ -9,7 +9,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests -Dflyway.skip=true
 
 # --- STAGE 2: Запуск приложения с помощью JRE ---
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 RUN mkdir -p /app/data
 COPY --from=build /app/target/*.jar app.jar
