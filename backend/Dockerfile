@@ -17,6 +17,7 @@ RUN mvn clean package -DskipTests \
     -Dflyway.placeholders.admin.username=dummy_admin \
     -Dflyway.placeholders.admin.email=dummy@example.com \
     -Dflyway.placeholders.admin.password=dummy_password \
+    -Dflyway.placeholders.admin.full-name=Dummy_Name \
     -Dflyway.placeholders.admin.role=ADMIN
 
 # --- STAGE 2: Запуск приложения с помощью облегченного JRE ---
