@@ -1,5 +1,5 @@
 # --- STAGE 1: Упаковка приложения с помощью Maven ---
-FROM maven:3.9.9-eclipse-temurin-21-alpines AS build
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS build AS build
 WORKDIR /app
 
 # Сначала копируем pom.xml для использования кэша
