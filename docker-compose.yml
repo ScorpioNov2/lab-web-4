@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    environment:
+      - SERVER_PORT=8080
+      - JWT_SECRET=${JWT_SECRET}
+      # Путь к БД внутри контейнера зафиксирован в папке /app/data
+      - DB_URL=jdbc:sqlite:/app/data/students.db
+      - DB_DRIVER=${DB_DRIVER:-org.sqlite.JDBC}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ADMIN_ROLE=${ADMIN_ROLE:-ADMIN}
+      - ADMIN_FULL_NAME=${ADMIN_FULL_NAME}
+      - JOOQ_SQL_DIALECT=${JOOQ_SQL_DIALECT:-SQLITE}
+      - FLYWAY_LOCATIONS=${FLYWAY_LOCATIONS:-classpath:db/migration}
+    env_file:
+      - .env
+    volumes:
+      # Подключение volume, чтобы данные SQLite не пропадали при перезапуске контейнера
+      - sqlite-data:/app/data
+    restart: always
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
+
+volumes:
+  sqlite-data: # Объявление именованного хранилища (volume) для SQLite
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,89 @@
+name: Docker CI/CD Pipeline
+
+# Активация workflow при пуше коммитов или создании Pull Request в ветки main/master
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    name: Build and Test Services
+    runs-on: ubuntu-latest
+
+    steps:
+    # Шаг 1: Получение исходного кода из репозитория GitHub на виртуальную машину Linux
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    # Шаг 2: Инициализация Docker Buildx для оптимизации кэширования и ускорения сборки
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Шаг 3: Создание временного файла .env на виртуальной машине из файла шаблона .env.example
+    # Этот шаг обеспечивает Docker Compose необходимыми переменными конфигурации для прохождения проверки
+    - name: Prepare environment file (.env)
+      run: |
+        if [ -f .env.example ]; then
+          cp .env.example .env
+          echo "Файл .env успешно создан на виртуальной машине."
+        else
+          echo "Файл .env.example не найден в корневой директории!"
+          exit 1
+        fi
+
+    # Шаг 4: Проверка валидности синтаксиса файла docker-compose.yml
+    - name: Verify Docker Compose configuration
+      run: docker compose config
+
+    # Шаг 5: Одновременная сборка обоих сервисов Frontend и Backend с помощью Docker Compose
+    # Эта команда проверяет весь процесс компиляции Spring Boot и Angular на наличие ошибок
+    - name: Build Docker Images using Compose
+      run: |
+        docker compose build --build-arg BUILDKIT_INLINE_CACHE=1
+
+    # Шаг 6: Вывод списка успешно собранных Docker-образов для подтверждения результата
+    - name: List built Docker images
+      run: docker images
+
+
+# name: Docker CI/CD Pipeline
+
+# # Активация процесса при событиях push или pull request в основные ветки
+# on:
+#   push:
+#     branches: [ "main", "master" ]
+#   pull_request:
+#     branches: [ "main", "master" ]
+
+# jobs:
+#   build-and-test:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     # Шаг 1: Получение исходного кода из GitHub на виртуальную машину GitHub Actions
+#     - name: Checkout source code
+#       uses: actions/checkout@v4
+
+#     # Шаг 2: Настройка Docker Buildx (для оптимизации кэширования при сборке)
+#     - name: Set up Docker Buildx
+#       uses: docker/setup-buildx-action@v3
+
+#     # Шаг 3: Подготовка файла .env из шаблона, чтобы в Docker Compose не отсутствовали переменные окружения
+#     - name: Prepare environment file
+#       run: cp .env.example .env
+
+#     # Шаг 4: Проверка синтаксиса файла docker-compose.yml
+#     - name: Verify Docker Compose configuration
+#       run: docker compose config
+
+#     # Шаг 5: Одновременная сборка Frontend и Backend с помощью Docker Compose
+#     # Использование кэша для ускорения сборки при последующих запусках
+#     - name: Build Docker Images using Compose
+#       run: |
+#         docker compose build --build-arg BUILDKIT_INLINE_CACHE=1
+
+#     # Шаг 6: Проверка списка успешно собранных образов
+#     - name: List built Docker images
+#       run: docker images
