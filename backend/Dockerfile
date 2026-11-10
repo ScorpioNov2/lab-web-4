@@ -6,7 +6,7 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 
 # Пропуск тестов и миграций Flyway при сборке
-RUN mvn clean package -DskipTests -Dflyway.skip=true
+RUN mvn clean package -DskipTests -Dflyway.skip=true -Dadmin.username=dummy -Dadmin.email=dummy@example.com -Dadmin.password=dummy
 
 # --- STAGE 2: Запуск приложения с помощью JRE ---
 FROM eclipse-temurin:17-jre-alpine
