@@ -1,30 +1,24 @@
-# --- STAGE 1: Сборка исходного кода с помощью Maven и генерация кода jOOQ ---
+# --- STAGE 1: Упаковка приложения с помощью Maven ---
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /app
 
-# Сначала копируем pom.xml для использования кэша загрузки зависимостей
+# Сначала копируем pom.xml для использования кэша зависимостей
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Предварительное создание пустого файла DB SQLite, чтобы обеспечить среду работы для Flyway/jOOQ
-RUN mkdir -p src/main/resources && touch src/main/resources/students.db
-
-# Копируем весь исходный код
+# Копируем весь исходный код в контейнер
 COPY src ./src
 
-# Передача фиктивных значений для плейсхолдеров Flyway, чтобы пройти этап сборки
+# Запуск упаковки в .jar и полное отключение плагинов, выполняемых во время сборки
 RUN mvn clean package -DskipTests \
-    -Dflyway.placeholders.admin.username=dummy_admin \
-    -Dflyway.placeholders.admin.email=dummy@example.com \
-    -Dflyway.placeholders.admin.password=dummy_password \
-    -Dflyway.placeholders.admin.full-name=Dummy_Name \
-    -Dflyway.placeholders.admin.role=ADMIN
+    -Dflyway.skip=true \
+    -Djooq.codegen.skip=true
 
-# --- STAGE 2: Запуск приложения с помощью облегченного JRE ---
+# --- STAGE 2: Запуск приложения Spring Boot ---
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Создание директории для хранения реальной базы данных SQLite во время работы (будет подключена через Docker Volume)
+# Создание директории для хранения реальной базы данных SQLite во время работы (volume настроен в docker-compose)
 RUN mkdir -p /app/data
 
 COPY --from=build /app/target/*.jar app.jar
