@@ -6,14 +6,17 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Важный шаг: Предварительное создание структуры папок и пустого файла DB SQLite, чтобы Flyway/jOOQ не завершились с ошибкой
+# Предварительное создание пустого файла DB SQLite, чтобы обеспечить среду работы для Flyway/jOOQ
 RUN mkdir -p src/main/resources && touch src/main/resources/students.db
 
 # Копируем весь исходный код
 COPY src ./src
 
-# Запуск сборки (Flyway и jOOQ успешно сгенерируют исходный код на основе созданного файла базы данных)
-RUN mvn clean package -DskipTests
+# Передача фиктивных значений для плейсхолдеров Flyway, чтобы пройти этап сборки
+RUN mvn clean package -DskipTests \
+    -Dflyway.placeholders.admin.username=dummy_admin \
+    -Dflyway.placeholders.admin.email=dummy@example.com \
+    -Dflyway.placeholders.admin.password=dummy_password
 
 # --- STAGE 2: Запуск приложения с помощью облегченного JRE ---
 FROM eclipse-temurin:17-jre-alpine
