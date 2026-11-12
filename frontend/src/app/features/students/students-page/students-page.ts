@@ -12,9 +12,12 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	catchError,
+	distinctUntilChanged,
 	EMPTY,
 	filter,
+	finalize,
 	firstValueFrom,
+	map,
 	merge,
 	Observable,
 	skip,
@@ -22,11 +25,14 @@ import {
 	Subject,
 	switchMap,
 	tap,
+	timer,
 } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CONNECTION_ERROR_MESSAGE, errorMessage } from '../../../core/http/api-error';
 import { PagedResponse } from '../../../core/models/paged-response';
 import { AlertService } from '../../../shared/ui/alert/alert.service';
+import { LoadingService } from '../../../shared/ui/loading/loading.service';
+import { LoadingOverlay } from '../../../shared/ui/loading/loading-overlay';
 import { Pagination } from '../../../shared/ui/pagination/pagination';
 import { AuthModalService } from '../../auth/auth-modal.service';
 import { StudentApi } from '../student.api';
@@ -47,7 +53,7 @@ import { StudentTable } from '../student-table/student-table';
  */
 @Component({
 	selector: 'app-students-page',
-	imports: [StudentTable, Pagination, StudentModal],
+	imports: [StudentTable, Pagination, StudentModal, LoadingOverlay],
 	templateUrl: './students-page.html',
 	styleUrl: './students-page.scss',
 	host: { '(document:click)': 'onDocumentClick($event)' },
@@ -55,6 +61,7 @@ import { StudentTable } from '../student-table/student-table';
 export class StudentsPage {
 	private readonly api = inject(StudentApi);
 	private readonly alert = inject(AlertService);
+	private readonly loading = inject(LoadingService);
 	private readonly router = inject(Router);
 	private readonly route = inject(ActivatedRoute);
 	protected readonly auth = inject(AuthService);
@@ -63,6 +70,7 @@ export class StudentsPage {
 	private readonly tableContainer = viewChild.required<ElementRef<HTMLElement>>('tableContainer');
 
 	private readonly rowsPerPage = 10;
+	private readonly searchDebounceMs = 1000;
 
 	/** Search / sort / page. Read from the URL once at startup, mirrored back into it on every refresh. */
 	protected readonly criteria = signal<StudentCriteria>(
@@ -82,8 +90,35 @@ export class StudentsPage {
 	protected readonly modal = signal<StudentModalState | null>(null);
 
 	private readonly refresh$ = new Subject<void>();
+	private readonly search$ = new Subject<string>();
 
 	constructor() {
+		this.search$
+			.pipe(
+				map((keyword) => keyword.trim()),
+				distinctUntilChanged(),
+				// Bật loading ngay khi bắt đầu gõ (chỉ bật 1 lần cho cả chuỗi gõ liên tục)
+				tap(() => this.loading.show()),
+				switchMap((searchKeyword) =>
+					// Chờ t ms không gõ gì thêm; nếu gõ tiếp, timer reset nhưng loading vẫn giữ nguyên
+					timer(this.searchDebounceMs).pipe(
+						tap(() => {
+							this.criteria.update((criteria) => ({
+								...criteria,
+								searchKeyword,
+								pageNumber: 1,
+							}));
+							this.syncUrl();
+						}),
+						switchMap(() => this.loadPage()),
+						// Tắt loading khi API xong HOẶC khi người dùng đóng trang/hủy luồng
+						finalize(() => this.loading.hide()),
+					),
+				),
+				takeUntilDestroyed(),
+			)
+			.subscribe((page) => this.result.set(page));
+
 		merge(
 			this.refresh$,
 			// guest -> logged in: show the data. (skip(1) = the value at startup, covered by startWith)
@@ -115,8 +150,9 @@ export class StudentsPage {
 
 	protected onSearch(event: Event): void {
 		const searchKeyword = (event.target as HTMLInputElement).value;
-		this.criteria.update((criteria) => ({ ...criteria, searchKeyword, pageNumber: 1 }));
-		this.refresh();
+		// this.criteria.update((criteria) => ({ ...criteria, searchKeyword, pageNumber: 1 }));
+		// this.refresh();
+		this.search$.next(searchKeyword);
 	}
 
 	protected openAdd(): void {
