@@ -33,11 +33,18 @@
 	<span class="badge-info">Всего: {{ totalStudents() }} студентов</span>
 </section>
 
-<section #tableContainer class="table-container">
-	@if (result() === null) {
+<section #tableContainer class="table-container" [class.is-loading]="loading.isLoading()">
+	<app-loading-overlay />
+	@if (students().length === 0) {
 		<div class="empty-state">
 			<img src="assets/app/empty-box.png" alt="No data" class="empty-img" />
-			<p class="empty-text">Здесь пока ничего нет!</p>
+			<p class="empty-text">
+				{{
+					result() === null
+						? 'Здесь пока ничего нет!'
+						: 'Список пуст или результаты не найдены.'
+				}}
+			</p>
 			@if (!auth.isLoggedIn()) {
 				<div class="empty-text-wrapper">
 					Вы можете
@@ -51,8 +58,6 @@
 				</div>
 			}
 		</div>
-	} @else if (students().length === 0) {
-		<p class="no-results">Список пуст или результаты не найдены.</p>
 	} @else {
 		<app-student-table
 			[students]="students()"

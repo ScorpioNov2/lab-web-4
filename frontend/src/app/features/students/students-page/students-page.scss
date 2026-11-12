@@ -24,6 +24,12 @@
 	}
 }
 
+.action-buttons {
+	.btn + .btn {
+		margin-left: 4px;
+	}
+}
+
 .status-section {
 	margin-bottom: 16px;
 }
@@ -43,9 +49,13 @@
 	margin-bottom: 50px;
 	min-height: 50px;
 	display: flex;
-	align-items: center;
 	justify-content: center;
 	background-color: #ffffff;
+	position: relative;
+
+	&.is-loading {
+		min-height: 220px;
+	}
 }
 
 .no-results {
@@ -115,5 +125,11 @@
 	.action-buttons,
 	.action-buttons button {
 		width: 100%;
+	}
+
+	.action-buttons {
+		.btn + .btn {
+			margin: 0;
+		}
 	}
 }
