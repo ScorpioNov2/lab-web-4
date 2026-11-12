@@ -95,12 +95,13 @@ export class StudentsPage {
 	constructor() {
 		this.search$
 			.pipe(
+				// debounceTime(searchDebounceMs),
 				map((keyword) => keyword.trim()),
 				distinctUntilChanged(),
-				// Bật loading ngay khi bắt đầu gõ (chỉ bật 1 lần cho cả chuỗi gõ liên tục)
+				// Trigger loading immediately on typing start (once per continuous typing session)
 				tap(() => this.loading.show()),
 				switchMap((searchKeyword) =>
-					// Chờ t ms không gõ gì thêm; nếu gõ tiếp, timer reset nhưng loading vẫn giữ nguyên
+					// Debounce for t ms; reset timer if typing continues, keep loading state intact
 					timer(this.searchDebounceMs).pipe(
 						tap(() => {
 							this.criteria.update((criteria) => ({
@@ -111,7 +112,7 @@ export class StudentsPage {
 							this.syncUrl();
 						}),
 						switchMap(() => this.loadPage()),
-						// Tắt loading khi API xong HOẶC khi người dùng đóng trang/hủy luồng
+						// Stop loading when the API call finishes OR when the user closes the page / cancels the flow
 						finalize(() => this.loading.hide()),
 					),
 				),
