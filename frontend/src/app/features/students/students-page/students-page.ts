@@ -124,6 +124,7 @@ export class StudentsPage {
 			this.refresh$,
 			// guest -> logged in: show the data. (skip(1) = the value at startup, covered by startWith)
 			toObservable(this.auth.isLoggedIn).pipe(skip(1), filter(Boolean)),
+			timer(5000, 5000).pipe(filter(() => this.auth.isLoggedIn())),
 		)
 			.pipe(
 				startWith(undefined),
